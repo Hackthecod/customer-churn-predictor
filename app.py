@@ -51,11 +51,11 @@ with col1:
         options=["Yes", "No"]
     )
 
-    tenure = st.number_input(
-        "Tenure (Months)",
+    tenure_years = st.number_input(
+        "Tenure (Years)",
         min_value=0,
-        max_value=200,
-        value=12,
+        max_value=50,
+        value=1,
         step=1
     )
 
@@ -128,16 +128,17 @@ with col4:
 # ================
 # Create tenure group
 
-if tenure <= 12:
-    tenure_group = "0-12"
-elif tenure <= 24:
-    tenure_group = "12-24"
-elif tenure <= 48:
-    tenure_group = "24-48"
-elif tenure <= 72:
-    tenure_group = "48-72"
+if tenure_years <= 1:
+    tenure_group = "0-1yr"
+elif tenure_years <= 2:
+    tenure_group = "1-2yr"
+elif tenure_years <= 4:
+    tenure_group = "2-4yr"
+elif tenure_years <= 6:
+    tenure_group = "4-6yr"
 else:
-    tenure_group = "72+"
+    tenure_group = "6+yr"
+
 
 # =============
 # Encode input data to match training
@@ -186,7 +187,7 @@ input_data_raw = pd.DataFrame({
     "SeniorCitizen": [SeniorCitizen],
     "Partner": [Partner],
     "Dependents": [Dependents],
-    "tenure": [tenure],
+    "tenure": [tenure_years],
     "PhoneService": [PhoneService],
     "MultipleLines": [MultipleLines],
     "InternetService": [InternetService],
@@ -200,9 +201,8 @@ input_data_raw = pd.DataFrame({
     "tenure_group": [tenure_group]
 })
 
-# ============================================================================
+# =========
 # DISPLAY INPUT SUMMARY
-# ============================================================================
 
 st.markdown("---")
 st.subheader("📋 Input Summary")
@@ -212,7 +212,7 @@ with col5:
     st.write(f"**Senior Citizen:** {'Yes' if SeniorCitizen == 1 else 'No'}")
     st.write(f"**Partner:** {Partner}")
     st.write(f"**Dependents:** {Dependents}")
-    st.write(f"**Tenure:** {tenure} months")
+    st.write(f"**Tenure:** {tenure_years} Years")
     st.write(f"**Tenure Group:** {tenure_group}")
     st.write(f"**Phone Service:** {PhoneService}")
     st.write(f"**Multiple Lines:** {MultipleLines}")
@@ -227,9 +227,8 @@ with col6:
     st.write(f"**Payment Method:** {PaymentMethod}")
     st.write(f"**Monthly Charges:** ${MonthlyCharges:.2f}")
 
-# ============================================================================
+# =======
 # ENCODE AND PREDICT
-# ============================================================================
 
 st.markdown("---")
 
